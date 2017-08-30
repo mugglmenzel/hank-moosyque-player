@@ -16,6 +16,7 @@ setup(
         'pydub',
         'mxnet',
         'opencv-python',
-        'numpy'
+        'numpy',
+        'picamera'
     ]
 )

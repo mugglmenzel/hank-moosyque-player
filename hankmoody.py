@@ -1,4 +1,6 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
+from time import sleep
+from picamera import PiCamera
 
 import utils
 from facerecognizer import FaceRecognizer
@@ -8,9 +10,13 @@ class HankMoody:
     def __init__(self):
         self.client = self.__initialize_iot_client()
         self.mqtt = self.client.getMQTTConnection()
+        self.camera = self.__initialize_camera()
 
     def start(self):
-        emotions = FaceRecognizer("samples/image3.jpg").prevalent_emotions
+
+        self.camera.capture('camera/sample.jpg')
+
+        emotions = FaceRecognizer("camera/sample.jpg").prevalent_emotions
         for emotion in emotions:
             print('Playing music for detected prevelant emotion:\n-> %s' % emotion)
             self.mqtt.publish('actions', {
@@ -26,6 +32,15 @@ class HankMoody:
         client.configureCredentials("certs/root.pem.crt", "certs/private.pem.key", "certs/certificate.pem.crt")
         client.getMQTTConnection().configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
         return client
+
+    @staticmethod
+    def __initialize_camera():
+        camera = PiCamera()
+        camera.resolution = (1024, 768)
+        camera.start_preview()
+        # Camera warm-up time
+        sleep(2)
+        return camera
 
 
 if __name__ == "__main__":
