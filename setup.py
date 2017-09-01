@@ -15,7 +15,7 @@ setup(
         'pyaudio',
         'pydub',
         'mxnet',
-        'opencv-python',
+#        'opencv-python',
         'numpy',
         'picamera'
     ]

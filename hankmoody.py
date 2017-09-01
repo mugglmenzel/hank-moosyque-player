@@ -1,5 +1,6 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 from time import sleep
+from threading import Thread
 from picamera import PiCamera
 
 import utils
@@ -15,7 +16,10 @@ class HankMoody:
     def start(self):
 
         self.camera.capture('camera/sample.jpg')
+        t = Thread(target=self.recognize)
+        t.start()
 
+    def recognize(self):
         emotions = FaceRecognizer("camera/sample.jpg").prevalent_emotions
         for emotion in emotions:
             print('Playing music for detected prevelant emotion:\n-> %s' % emotion)

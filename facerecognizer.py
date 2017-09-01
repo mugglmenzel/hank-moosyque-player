@@ -1,9 +1,9 @@
 from collections import namedtuple
 
 import boto3
-import cv2
-import mxnet as mx
-import numpy as np
+#import cv2
+#import mxnet as mx
+#import numpy as np
 import utils
 
 
@@ -23,13 +23,14 @@ class FaceRecognizer:
                 Attributes=['ALL']
             )
             self.__find_prevalent_emotions()
-            self.__predict_categories_locally()
+#            self.__predict_categories_locally()
 
     def __find_prevalent_emotions(self):
         for face in self.faces['FaceDetails']:
             emotions = face['Emotions']
             self.prevalent_emotions.append(utils.filter_item_by_attribute(emotions, 'Confidence'))
 
+"""
     def __predict_categories_locally(self):
         print('downloading imagenet model...')
         folder = 'resnet'
@@ -63,3 +64,4 @@ class FaceRecognizer:
         a = np.argsort(prob)[::-1]
         for i in a[0:5]:
             print('-> probability=%f, class=%s' % (prob[i], labels[i]))
+"""
