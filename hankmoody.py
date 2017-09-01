@@ -14,7 +14,7 @@ class HankMoody:
         self.camera = self.__initialize_camera()
 
     def start(self):
-
+        utils.assert_directory("camera")
         self.camera.capture('camera/sample.jpg')
         t = Thread(target=self.recognize)
         t.start()
